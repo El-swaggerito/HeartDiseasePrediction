@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Heart Disease Prediction System</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="text-center">Heart Disease Prediction</h1>
+      <form id="prediction-form" class="mt-4">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="age">Age</label>
+            <input
+              type="number"
+              class="form-control"
+              id="age"
+              name="age"
+              required
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="sex">Sex (0 = Female, 1 = Male)</label>
+            <input
+              type="number"
+              class="form-control"
+              id="sex"
+              name="sex"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="cp">Chest Pain Type (0-3)</label>
+            <input
+              type="number"
+              class="form-control"
+              id="cp"
+              name="cp"
+              required
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="trestbps">Resting Blood Pressure</label>
+            <input
+              type="number"
+              class="form-control"
+              id="trestbps"
+              name="trestbps"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="chol">Serum Cholesterol</label>
+            <input
+              type="number"
+              class="form-control"
+              id="chol"
+              name="chol"
+              required
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="fbs">Fasting Blood Sugar (1 = True, 0 = False)</label>
+            <input
+              type="number"
+              class="form-control"
+              id="fbs"
+              name="fbs"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="restecg">Resting ECG Results (0-2)</label>
+            <input
+              type="number"
+              class="form-control"
+              id="restecg"
+              name="restecg"
+              required
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="thalach">Maximum Heart Rate Achieved</label>
+            <input
+              type="number"
+              class="form-control"
+              id="thalach"
+              name="thalach"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="exang">Exercise Induced Angina (1 = Yes, 0 = No)</label>
+            <input
+              type="number"
+              class="form-control"
+              id="exang"
+              name="exang"
+              required
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="oldpeak">ST Depression Induced by Exercise</label>
+            <input
+              type="number"
+              class="form-control"
+              id="oldpeak"
+              name="oldpeak"
+              step="0.1"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="slope"
+              >Slope of the Peak Exercise ST Segment (0-2)</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="slope"
+              name="slope"
+              required
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="ca"
+              >Number of Major Vessels Colored by Fluoroscopy (0-3)</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="ca"
+              name="ca"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="thal"
+              >Thal (3 = Normal, 6 = Fixed Defect, 7 = Reversible Defect)</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="thal"
+              name="thal"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Predict</button>
+      </form>
+      <div id="result" class="mt-4 text-center"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+      $("#prediction-form").on("submit", function (event) {
+        event.preventDefault();
+        $.ajax({
+          url: "/predict",
+          method: "POST",
+          data: $(this).serialize(),
+          success: function (data) {
+            $("#result").html(
+              '<div class="alert alert-info">' + data.result + "</div>"
+            );
+          },
+          error: function (xhr) {
+            $("#result").html(
+              '<div class="alert alert-danger">Error: ' +
+                xhr.responseJSON.error +
+                "</div>"
+            );
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
